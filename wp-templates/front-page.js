@@ -10,8 +10,14 @@ import {
   Hero,
   SEO,
 } from '../components';
+import { usePosts } from '@faustwp/core';
+import { useEffect, useState } from 'react'
+// import { client } from 'client';
+
+
 
 export default function Component() {
+  const [posts, setPosts] = useState()
   const { data } = useQuery(Component.query, {
     variables: Component.variables(),
   });
@@ -20,6 +26,59 @@ export default function Component() {
     data?.generalSettings;
   const primaryMenu = data?.headerMenuItems?.nodes ?? [];
   const footerMenu = data?.footerMenuItems?.nodes ?? [];
+
+  // const { usePosts } = client;
+
+
+  //   useEffect(() => {
+  //   // const posts = usePosts();
+  //   const posts = usePosts({
+  //     first: 6,
+  //   });
+  //   console.log('post',posts)
+   
+  // }, []);
+
+
+  // useEffect(() => {
+  //   // const posts = usePosts();
+  //   const posts = usePosts({
+  //     first: 6,
+  //   });
+  //   console.log('post',posts)
+   
+  // }, []);
+  //
+  //  window.electronAPI.customFunction();
+
+  useEffect(() => { // esto si funciona
+    const llamada = async () => {
+      try {
+        const response = await fetch(
+          'https://headless-wordpress.local/wp-json/wp/v2/posts'
+        );
+
+        const posts = await response.json();
+        setPosts(posts)
+
+        console.log('posts', posts);
+      } catch (err) {
+        console.log('esto no funciona', err);
+      } 
+    };
+
+    llamada();
+  }, []);
+
+  useEffect(() => {
+    if (window.electronAPI) {
+      window.electronAPI.customFunction();
+    } else {
+      console.warn('Electron API no está disponible');
+    }
+  }, []);
+  
+  
 
   return (
     <>
@@ -33,6 +92,25 @@ export default function Component() {
         <Container>
           <Hero title={'Front Page'} />
           <div className="text-center">
+            {/* {posts?.map((post) => Object.values(post.title))} */}
+
+            {posts?.map(item => (
+        <div
+          key={item.id}
+          style={{
+            border: '1px solid black',
+            padding: '20px',
+            borderRadius: '10px',
+            marginBottom: '10px',
+            textAlign: 'center',
+          }}
+        >
+          <h2>{item.title?.rendered}</h2>
+          <p>ID: {item.id}</p>
+          <p>{item.excerpt?.rendered}</p>
+        </div>
+      ))}
+          <p>rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr00r</p>
             <p>This page is utilizing the "front-page" WordPress template.</p>
             <code>wp-templates/front-page.js</code>
           </div>

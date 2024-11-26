@@ -7,10 +7,10 @@
     "build": "faust build",
     "generate": "faust generatePossibleTypes",
     "stylesheet": "faust generateGlobalStylesheet",
-    "start": "faust start"
+    "start": "faust start",
+    "electron": "electron ./electron/main.js"
   },
   "dependencies": {
-    "@apollo/client": "^3.10.4",
     "@faustwp/cli": "^3.1.1",
     "@faustwp/core": "^3.1.0",
     "@wordpress/base-styles": "^5.10.0",
@@ -23,10 +23,11 @@
     "sass": "^1.77.3"
   },
   "devDependencies": {
-    "next-secure-headers": "^2.2.0"
+    "next-secure-headers": "^2.2.0",
+    "electron": "^33.2.0"
   },
   "engines": {
-    "node": ">=18",
+    "node": ">=20",
     "npm": ">=8"
   }
 }
