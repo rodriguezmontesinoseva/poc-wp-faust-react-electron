@@ -1,11 +1,10 @@
-// const { contextBridge } = require('electron');
-       
-// contextBridge.exposeInMainWorld('electronAPI', {
-//   sayHello: () => console.log('Hello from Electron!')
-// });
+const { contextBridge, ipcRenderer } = require('electron');
 
-const { contextBridge } = require('electron');
+console.log('Preload.js cargado'); 
 
 contextBridge.exposeInMainWorld('electronAPI', {
-  customFunction: () => console.log('Desde Electron')
+  customFunction: () => {
+    console.log('customFunction llamada desde el renderizador'); 
+    ipcRenderer.send('custom-function');
+  },
 });

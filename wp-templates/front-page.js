@@ -55,7 +55,8 @@ export default function Component() {
     const llamada = async () => {
       try {
         const response = await fetch(
-          'https://headless-wordpress.local/wp-json/wp/v2/posts'
+          'http://headless-wordpress.local/wp-json/wp/v2/posts' // DEBE SER HTTPS
+          // 'http://localhost:3000/wp-json/wp/v2/posts'
         );
 
         const posts = await response.json();
@@ -70,13 +71,17 @@ export default function Component() {
     llamada();
   }, []);
 
+
+  // warn que diferencia si está en Navegador estándar o Electron
   useEffect(() => {
-    if (window.electronAPI) {
+    if (typeof window.electronAPI !== 'undefined') {
+      console.log('Electron API está disponible');
       window.electronAPI.customFunction();
     } else {
-      console.warn('Electron API no está disponible');
+      console.warn('Electron API no está disponible: estás en un navegador estándar');
     }
   }, []);
+
   
   
 
@@ -92,8 +97,6 @@ export default function Component() {
         <Container>
           <Hero title={'Front Page'} />
           <div className="text-center">
-            {/* {posts?.map((post) => Object.values(post.title))} */}
-
             {posts?.map(item => (
         <div
           key={item.id}
@@ -110,7 +113,6 @@ export default function Component() {
           <p>{item.excerpt?.rendered}</p>
         </div>
       ))}
-          <p>rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr00r</p>
             <p>This page is utilizing the "front-page" WordPress template.</p>
             <code>wp-templates/front-page.js</code>
           </div>

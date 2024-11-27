@@ -4,16 +4,22 @@ import possibleTypes from './possibleTypes.json';
 
 setConfig({
   wpUrl: 'http://headless-wordpress.local',
-  apiClientSecret: process.env.WP_HEADLESS_SECRET,
-  apiClientId: process.env.WP_HEADLESS_CLIENT_ID,
+  // apiClientSecret: process.env.WP_HEADLESS_SECRET,
+  // apiClientId: process.env.WP_HEADLESS_CLIENT_ID,
   templates,
   plugins: [],
-  experimentalToolbar: true,
+  experimental: {
+    useRestApi: true, // Habilita REST API en lugar de GraphQL
+  },
+  // experimentalToolbar: true,
   possibleTypes,
 });
 
 export default {
   wpUrl: 'http://headless-wordpress.local',
-  apiClientSecret: process.env.WP_HEADLESS_SECRET,
-  apiClientId: process.env.WP_HEADLESS_CLIENT_ID,
+  experimental: {
+    useRestApi: true, // Redundancia para asegurarte de que REST API esté activo
+  },
+  // apiClientSecret: process.env.WP_HEADLESS_SECRET,
+  // apiClientId: process.env.WP_HEADLESS_CLIENT_ID,
 };

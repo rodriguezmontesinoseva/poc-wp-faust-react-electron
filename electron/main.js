@@ -1,36 +1,24 @@
-const { app, BrowserWindow } = require('electron');
+
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 
 let mainWindow;
-
 app.on('ready', () => {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
-      // contextIsolation: true,
-      //  nodeIntegration: true,
+      contextIsolation: true,
+      enableRemoteModule: false,
     },
   });
 
-        //    // Carga la aplicación Faust (Next.js)
-        //    const appURL = process.env.NODE_ENV === 'development'
-        //    ? 'http://localhost:3000' // Faust usa este puerto por defecto
-        //    : `file://${path.join(__dirname, 'out/index.html')}`;
-       
-        //  mainWindow.loadURL(appURL);
 
   // Carga tu aplicación React
   mainWindow.loadURL('http://localhost:3000');
 
-  // // Abre herramientas de desarrollo
-  //  mainWindow.webContents.openDevTools();
 
-//   mainWindow.webContents.session.webRequest.onBeforeSendHeaders((details, callback) => {
-//   details.requestHeaders["Origin"] = "http://localhost";
-//   callback({ cancel: false, requestHeaders: details.requestHeaders });
-// });
 });
 
 app.on('window-all-closed', () => {
@@ -44,3 +32,10 @@ app.on('activate', () => {
     createWindow();
   }
 });
+
+ipcMain.on('custom-function', () => {
+  console.log('customFunction fue llamada desde el renderizador');
+  // Realiza alguna acción, como abrir una ventana o enviar datos de vuelta
+});
+
+// app.commandLine.appendSwitch('ignore-certificate-errors'); //IGNORA TEMPORALMENTE EL PROBLEMA DEL CERTIFICADO
